@@ -159,7 +159,6 @@ Die Steuerung der Bereiche A, B und C wurde im Labor am realen Aufbau getestet u
 - Der kapazitive Sensor kommt vor SensC_Push
 - 500 ms reichen für Push B und Push C
 - Der Lagerzähler startet bei 0
-- SensC_Kap, LS und Induktiv werden nicht verwendet
 
 ## Projektkontext und eigener Anteil
 
@@ -168,7 +167,6 @@ Laborprojekt aus dem Studium (Automatisierungstechnik).
 - HMI und Störmeldesystem in der Simulation getestet.
 - **Inbetriebnahme und Test** des gesamten Programms und HMI in PLCSIM und WinCC-Simulation, inklusive Fehlersuche.
 
-Die Aufgabenstellung der Hochschule ist nicht Teil dieses Repositorys.
 
 ## Dateien
 
@@ -183,4 +181,3 @@ Die Aufgabenstellung der Hochschule ist nicht Teil dieses Repositorys.
 | hmi_betrieb.jpg, hmi_meldungen.jpg | HMI-Bilder aus der Simulation |
 | kop_nw1_selbsthaltung.jpg | KOP-Netzwerk 1 |
 
-Die SCL-Dateien sind Auszüge der SCL-Netzwerke aus OB1. Die KOP-Netzwerke sind im TIA-Projekt enthalten.
