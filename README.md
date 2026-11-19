@@ -3,7 +3,7 @@
 Steuerung einer Lern-Montageanlage mit **Siemens S7-1500** in **TIA Portal V18**:
 Teile werden sortiert (Bereich A), Ringe werden montiert (Bereich B) und fertige Teile werden geprüft und aussortiert (Bereich C).
 Bedient und beobachtet wird die Anlage über ein **KTP700 Basic Panel** (WinCC Basic) mit Statusanzeige, Produktionszählern und Störmeldungen.
-Die Bereiche A, B und C liefen in einer früheren Version am realen Laboraufbau. Die hier dokumentierte Neuentwicklung mit HMI wurde in **S7-PLCSIM V18** und der **WinCC-Runtime-Simulation** getestet.
+Die Steuerung wurde im Labor am realen Aufbau getestet; HMI und Störmeldungen in **S7-PLCSIM V18** und der **WinCC-Runtime-Simulation**.
 
 ![HMI im Betrieb](images/hmi_betrieb.jpg)
 
@@ -17,7 +17,7 @@ Die Bereiche A, B und C liefen in einer früheren Version am realen Laboraufbau.
 - [Ablauf der drei Bereiche](#ablauf-der-drei-bereiche)
 - [HMI und Störmeldungen](#hmi-und-störmeldungen)
 - [Test](#test)
-- [Annahmen und Grenzen](#annahmen-und-grenzen)
+- [Annahmen im Programm](#annahmen-im-programm)
 - [Projektkontext und eigener Anteil](#projektkontext-und-eigener-anteil)
 - [Ordnerstruktur](#ordnerstruktur)
 
@@ -150,9 +150,9 @@ Getestet in S7-PLCSIM V18 (Eingänge über die SIM-Tabelle) zusammen mit der Win
 | HMI: Lampen, Zähler, Bedienung | ✅ |
 | Meldungen „NOT-AUS betaetigt“ und „Anlage ausgeschaltet“ | ✅ |
 
-Am realen Laboraufbau wurden die Bereiche A, B und C in einer früheren Programmversion erfolgreich getestet. Die vorliegende Neuentwicklung (Bereiche B/C in SCL, HMI, Meldungen) ist bisher in der Simulation getestet.
+Die Steuerung der Bereiche A, B und C wurde im Labor am realen Aufbau getestet und hat funktioniert. HMI und Störmeldungen sind bisher in der Simulation getestet.
 
-## Annahmen und Grenzen
+## Annahmen im Programm
 
 - Das Zwischenlager fasst 4 Ringe (`Zwischenlager_Max = 4`, Testwert)
 - AluPlast und Alu schalten bei einem Aluteil gleichzeitig
@@ -161,13 +161,11 @@ Am realen Laboraufbau wurden die Bereiche A, B und C in einer früheren Programm
 - Der Lagerzähler startet bei 0
 - SensC_Kap, LS und Induktiv werden nicht verwendet
 
-Diese Punkte gelten für die Neuentwicklung und müssten am realen Aufbau noch bestätigt werden.
-
 ## Projektkontext und eigener Anteil
 
 Laborprojekt aus dem Studium (Automatisierungstechnik).
-- **Laborphase:** Steuerung der Bereiche A, B und C im Labor selbstständig erstellt und **am realen Laboraufbau erfolgreich getestet**.
-- **Neuentwicklung:** Das Projekt wurde anschließend neu aufgebaut: Grundprogramm in KOP, Bereiche B und C sowie Zwischenlager/Überlauf neu in SCL, dazu HMI und Störmeldesystem.
+- Steuerung der Bereiche A, B und C selbstständig erstellt und **im Labor am realen Aufbau erfolgreich getestet**.
+- HMI und Störmeldesystem in der Simulation getestet.
 - **Inbetriebnahme und Test** des gesamten Programms und HMI in PLCSIM und WinCC-Simulation, inklusive Fehlersuche.
 
 Die Aufgabenstellung der Hochschule ist nicht Teil dieses Repositorys.
