@@ -5,7 +5,7 @@ Teile werden sortiert (Bereich A), Ringe werden montiert (Bereich B) und fertige
 Bedient und beobachtet wird die Anlage über ein **KTP700 Basic Panel** (WinCC Basic) mit Statusanzeige, Produktionszählern und Störmeldungen.
 Die Steuerung wurde im Labor am realen Aufbau getestet; HMI und Störmeldungen in **S7-PLCSIM V18** und der **WinCC-Runtime-Simulation**.
 
-![HMI im Betrieb](images/hmi_betrieb.jpg)
+![HMI im Betrieb](hmi_betrieb.jpg)
 
 ---
 
@@ -19,7 +19,7 @@ Die Steuerung wurde im Labor am realen Aufbau getestet; HMI und Störmeldungen i
 - [Test](#test)
 - [Annahmen im Programm](#annahmen-im-programm)
 - [Projektkontext und eigener Anteil](#projektkontext-und-eigener-anteil)
-- [Ordnerstruktur](#ordnerstruktur)
+- [Dateien](#dateien)
 
 ---
 
@@ -80,18 +80,18 @@ Ein- und ausgeschaltet wird die Anlage über Taster (T_Ein / T_Aus) oder über d
 | NW | Sprache | Inhalt |
 |---|---|---|
 | 1 | KOP | Ein/Aus mit **Selbsthaltung**: NotAus – (T_Ein ODER Anlage_Ein) – NICHT T_Aus → Anlage_Ein |
-| 2 | SCL | Bedienung über HMI (EIN/AUS) und **Meldebits** für die Störmeldungen → [Code](src/scl/OB1_NW02_HMI_Bedienung_Meldungen.scl) |
+| 2 | SCL | Bedienung über HMI (EIN/AUS) und **Meldebits** für die Störmeldungen → [Code](OB1_NW02_HMI_Bedienung_Meldungen.scl) |
 | 3–4 | KOP | Band und Kettenband laufen, solange Anlage_Ein = 1 |
 | 5–6 | KOP | Einschaltflanke: Zähler beim Start auf 0 setzen (MOVE) |
 | 7 | KOP | Push_A für Plastikteile, mit Vergleicher *Lager < Zwischenlager_Max* |
 | 8–12 | KOP | Flankenauswertung der Sensoren, Teile zählen (INC), Plastik = Gesamt − Alu (SUB) |
-| 13 | SCL | Bereich A: Zwischenlager hochzählen, Überlauf zählen → [Code](src/scl/OB1_NW13_Bereich_A_Zwischenlager.scl) |
-| 14 | SCL | Bereich B: Ring freigeben (TP 500 ms), Lager herunterzählen → [Code](src/scl/OB1_NW14_Bereich_B_Montage.scl) |
-| 15 | SCL | Bereich C: Prüfergebnis merken, Gut/Schlecht zählen, Schlechtteil auswerfen → [Code](src/scl/OB1_NW15_Bereich_C_Pruefung.scl) |
+| 13 | SCL | Bereich A: Zwischenlager hochzählen, Überlauf zählen → [Code](OB1_NW13_Bereich_A_Zwischenlager.scl) |
+| 14 | SCL | Bereich B: Ring freigeben (TP 500 ms), Lager herunterzählen → [Code](OB1_NW14_Bereich_B_Montage.scl) |
+| 15 | SCL | Bereich C: Prüfergebnis merken, Gut/Schlecht zählen, Schlechtteil auswerfen → [Code](OB1_NW15_Bereich_C_Pruefung.scl) |
 
 **Netzwerk 1 – Selbsthaltung mit NOT-AUS (KOP):**
 
-![KOP Netzwerk 1](images/kop_nw1_selbsthaltung.jpg)
+![KOP Netzwerk 1](kop_nw1_selbsthaltung.jpg)
 
 Verwendete Techniken: Selbsthaltung, NOT-AUS als Öffner, positive und negative Flanken mit „Vorher“-Merkern, Impulszeiten (TP), Vergleicher, Zähler im globalen DB.
 
@@ -134,11 +134,11 @@ Das Grundbild ist in vier Spalten aufgeteilt, entsprechend dem Aufbau der Anlage
 | 1 | `MB_Rutsche >= Zwischenlager_Max` | Zwischenlager voll – Push A gesperrt | Warnings |
 | 2 | `NOT Anlage_Ein` | Anlage ausgeschaltet | Warnings |
 
-![HMI mit Störmeldungen](images/hmi_meldungen.jpg)
+![HMI mit Störmeldungen](hmi_meldungen.jpg)
 
 ## Test
 
-Getestet in S7-PLCSIM V18 (Eingänge über die SIM-Tabelle) zusammen mit der WinCC-Runtime-Simulation. Ausführliches Protokoll: [docs/Testprotokoll.md](docs/Testprotokoll.md)
+Getestet in S7-PLCSIM V18 (Eingänge über die SIM-Tabelle) zusammen mit der WinCC-Runtime-Simulation. Ausführliches Protokoll: [Testprotokoll.md](Testprotokoll.md)
 
 | Test | Ergebnis |
 |---|---|
@@ -170,22 +170,17 @@ Laborprojekt aus dem Studium (Automatisierungstechnik).
 
 Die Aufgabenstellung der Hochschule ist nicht Teil dieses Repositorys.
 
-## Ordnerstruktur
+## Dateien
 
-```
-├── README.md
-├── docs/
-│   └── Testprotokoll.md
-├── images/
-│   ├── hmi_betrieb.jpg
-│   ├── hmi_meldungen.jpg
-│   └── kop_nw1_selbsthaltung.jpg
-└── src/
-    └── scl/
-        ├── OB1_NW02_HMI_Bedienung_Meldungen.scl
-        ├── OB1_NW13_Bereich_A_Zwischenlager.scl
-        ├── OB1_NW14_Bereich_B_Montage.scl
-        └── OB1_NW15_Bereich_C_Pruefung.scl
-```
+| Datei | Inhalt |
+|---|---|
+| README.md | diese Projektbeschreibung |
+| Testprotokoll.md | alle Tests mit Eingaben, Erwartung und Ergebnis |
+| OB1_NW02_HMI_Bedienung_Meldungen.scl | SCL-Code Netzwerk 2: HMI-Bedienung und Meldebits |
+| OB1_NW13_Bereich_A_Zwischenlager.scl | SCL-Code Netzwerk 13: Zwischenlager und Überlauf |
+| OB1_NW14_Bereich_B_Montage.scl | SCL-Code Netzwerk 14: Bereich B |
+| OB1_NW15_Bereich_C_Pruefung.scl | SCL-Code Netzwerk 15: Bereich C |
+| hmi_betrieb.jpg, hmi_meldungen.jpg | HMI-Bilder aus der Simulation |
+| kop_nw1_selbsthaltung.jpg | KOP-Netzwerk 1 |
 
 Die SCL-Dateien sind Auszüge der SCL-Netzwerke aus OB1. Die KOP-Netzwerke sind im TIA-Projekt enthalten.
