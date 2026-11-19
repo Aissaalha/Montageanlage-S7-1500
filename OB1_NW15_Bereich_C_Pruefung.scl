@@ -1,0 +1,26 @@
+// OB1 "Main" – Netzwerk 15 (SCL)
+// Bereich C: Qualitätskontrolle und Sortierung
+// Prüfergebnis merken: Kapazitiv = 1 -> Plastikring richtig auf Alu montiert
+IF "Kapazitiv" THEN
+    "DB_Produktionsdaten".C_Gut_Merker := TRUE;
+END_IF;
+
+// Teil erreicht den Pusher (positive Flanke SensC_Push) -> zählen
+IF "DB_Produktionsdaten".Anlage_Ein AND "SensC_Push" AND NOT "DB_Produktionsdaten".C_Push_Vorher THEN
+    IF "DB_Produktionsdaten".C_Gut_Merker THEN
+        "DB_Produktionsdaten".MC_Gut := "DB_Produktionsdaten".MC_Gut + 1;
+    ELSE
+        "DB_Produktionsdaten".MC_Schlecht := "DB_Produktionsdaten".MC_Schlecht + 1;
+    END_IF;
+END_IF;
+
+// Schlechtteil auf Rutsche "schlecht" auswerfen (Impuls 500 ms)
+"DB_Produktionsdaten".T_PushC(IN := "DB_Produktionsdaten".Anlage_Ein AND "SensC_Push" AND NOT "DB_Produktionsdaten".C_Gut_Merker,
+                              PT := T#500ms);
+"Push_C" := "DB_Produktionsdaten".T_PushC.Q AND "DB_Produktionsdaten".Anlage_Ein;
+
+// Merker zurücksetzen, wenn das Teil den Pusher verlassen hat (negative Flanke SensC_Push)
+IF NOT "SensC_Push" AND "DB_Produktionsdaten".C_Push_Vorher THEN
+    "DB_Produktionsdaten".C_Gut_Merker := FALSE;
+END_IF;
+"DB_Produktionsdaten".C_Push_Vorher := "SensC_Push";

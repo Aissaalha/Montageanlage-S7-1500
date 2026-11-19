@@ -1,0 +1,14 @@
+// OB1 "Main" – Netzwerk 2 (SCL)
+// Bedienung über HMI: EIN- und AUS-Taster auf dem Panel
+// HMI_Ein startet die Anlage wie der Taster T_Ein (nur wenn NotAus nicht gedrückt und kein Aus-Befehl)
+IF "DB_Produktionsdaten".HMI_Ein AND "NotAus" AND NOT "T_Aus" AND NOT "DB_Produktionsdaten".HMI_Aus THEN
+    "DB_Produktionsdaten".Anlage_Ein := TRUE;
+END_IF;
+// HMI_Aus schaltet die Anlage aus wie der Taster T_Aus
+IF "DB_Produktionsdaten".HMI_Aus THEN
+    "DB_Produktionsdaten".Anlage_Ein := FALSE;
+END_IF;
+// Meldebits fuer HMI-Meldungen (Bit 0 NotAus, Bit 1 Lager voll, Bit 2 Anlage aus)
+"DB_Produktionsdaten".HMI_Meldungen.%X0 := NOT "NotAus";
+"DB_Produktionsdaten".HMI_Meldungen.%X1 := "DB_Produktionsdaten".MB_Rutsche >= "DB_Produktionsdaten".Zwischenlager_Max;
+"DB_Produktionsdaten".HMI_Meldungen.%X2 := NOT "DB_Produktionsdaten".Anlage_Ein;

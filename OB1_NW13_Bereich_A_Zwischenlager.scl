@@ -1,0 +1,13 @@
+// OB1 "Main" – Netzwerk 13 (SCL)
+// Bereich A: Zwischenlager hochzählen (positive Flanke Push_A)
+"DB_Produktionsdaten".A_PushA_Impuls := "Push_A" AND NOT "DB_Produktionsdaten".A_PushA_Vorher;
+"DB_Produktionsdaten".A_PushA_Vorher := "Push_A";
+IF "DB_Produktionsdaten".A_PushA_Impuls THEN
+    "DB_Produktionsdaten".MB_Rutsche := "DB_Produktionsdaten".MB_Rutsche + 1;
+END_IF;
+
+// Bereich A: Überlauf zählen
+// Plastikteil erkannt (Flanke AluPlast, kein Alu), aber Push_A hat nicht ausgelöst -> Zwischenlager voll
+IF "DB_Produktionsdaten".Anlage_Ein AND "DB_Produktionsdaten".A_Teil_Impuls AND NOT "Alu" AND NOT "Push_A" THEN
+    "DB_Produktionsdaten".MB_Ueberlauf := "DB_Produktionsdaten".MB_Ueberlauf + 1;
+END_IF;

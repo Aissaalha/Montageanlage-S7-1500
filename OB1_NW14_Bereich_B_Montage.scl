@@ -1,0 +1,14 @@
+// OB1 "Main" – Netzwerk 14 (SCL)
+// Bereich B: Montage
+// Drehmagnet gibt einen Ring frei, wenn die Montagevorrichtung leer ist (SensB = 0)
+// und Ringe im Zwischenlager sind. TP erzeugt einen Impuls von 500 ms.
+// TP startet erst wieder, wenn IN zwischendurch FALSE war (Ring angekommen und abgeholt).
+"DB_Produktionsdaten".T_PushB(IN := "DB_Produktionsdaten".Anlage_Ein AND NOT "SensB" AND "DB_Produktionsdaten".MB_Rutsche > 0,
+                              PT := T#500ms);
+"Push_B" := "DB_Produktionsdaten".T_PushB.Q AND "DB_Produktionsdaten".Anlage_Ein;
+
+// Zwischenlager herunterzählen (positive Flanke Push_B)
+IF "Push_B" AND NOT "DB_Produktionsdaten".B_PushB_Vorher AND "DB_Produktionsdaten".MB_Rutsche > 0 THEN
+    "DB_Produktionsdaten".MB_Rutsche := "DB_Produktionsdaten".MB_Rutsche - 1;
+END_IF;
+"DB_Produktionsdaten".B_PushB_Vorher := "Push_B";
